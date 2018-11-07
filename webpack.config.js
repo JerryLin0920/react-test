@@ -1,5 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
+const proxy = process.env.npm_config_proxy || "http://localhost:8080/";
+
 const htmlPlugin = new HtmlWebPackPlugin({
   template: "./src/index.html",
   filename: "./index.html"
@@ -17,5 +19,17 @@ module.exports = {
       }
     ]
   },
-  plugins: [htmlPlugin]
+  plugins: [htmlPlugin],
+  devServer: {
+    port: 3000,
+    proxy: {
+      '**': {
+        target: proxy,
+        secure: false,
+        prependPath: false
+      }
+    },
+    publicPath: 'http://localhost:3000/',
+    historyApiFallback: true
+  }
 };
